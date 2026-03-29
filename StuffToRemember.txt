@@ -1,0 +1,1 @@
+1. In main, create a way to manage the different types of vehicles rather than just temporary objects for them.
