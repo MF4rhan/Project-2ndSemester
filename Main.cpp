@@ -37,162 +37,192 @@ int main() {
         printC("7. Exit");
         cin >> userChoice;
 
-            switch (userChoice) {
-            case 1:
+        switch (userChoice) {
+        case 1:
+        {
+
+            int ch; string origin; string destination; double totalWeight; string priorityLevel; string status; string cargoType; bool international; int assignedAssetID;
+
+            printC("Enter origin location: \n");                                                                  cin >> origin;
+            printC("Enter destination: \n");                                                                      cin >> destination;
+            printC("Enter total weight: \n");                                                                     cin >> totalWeight;
+            printC("Select priority level: \n1. STANDARD\n2. EXPRESS\n 3. CRITICAL\n");                           cin >> ch;
+            printC("Select status: \n1. ON\n2. OFF");                                                             cin >> status;
+            printC("Enter cargo type: ");                                                                         cin >> cargoType;
+            printC("Is it international?: ");                                                                     cin >> international;
+            printC("Enter assigned asset ID: ");                                                                  cin >> assignedAssetID;
+
+
+            switch (ch) {
+            case 1: priorityLevel = "STANDARD"; break;
+            case 2: priorityLevel = "EXPRESS"; break;
+            case 3: priorityLevel = "CRITICAL"; break;
+            default: priorityLevel = "STANDARD"; break;
+            }
+            printC("Select status: \n1. PENDING\n2. IN_TRANSIT\n 3. DELIVERED\n");                                cin >> ch;
+            switch (ch) {
+            case 1: status = "PENDING"; break;
+            case 2: status = "IN_TRANSIT"; break;
+            case 3: status = "DELIVERED"; break;
+            default: status = "PENDING"; break;
+            }
+            printC("Select cargo type: \n1. GENERAL\n2. PERISHABLE\n3. HAZARDOUS\n");                             cin >> ch;
+            switch (ch) {
+            case 1: cargoType = "GENERAL"; break;
+            case 2: cargoType = "PERISHABLE"; break;
+            case 3: cargoType = "HAZARDOUS"; break;
+            default: cargoType = "GENERAL"; break;
+            }
+            printC("Is shipment international? (1 = Yes, 0 = No): \n");                                           cin >> ch;
+            switch (ch) {
+            case 1: international = true; break;
+            case 0: international = false; break;
+            default: international = true; break;
+            }
+            printC("Assign to which vehicle?: \n1. Truck\n2. Cargo Plane\n 3. Ship\n 4. Heavy Lift Drone\n");     cin >> ch;
+            switch (ch) {
+            case 1: assignedAssetID = Truck1.getAssetID(); break;
+            case 2: assignedAssetID = CargoPlane1.getAssetID(); break;
+            case 3: assignedAssetID = Ship1.getAssetID(); break;
+            case 4: assignedAssetID = Drone1.getAssetID(); break;
+            default: assignedAssetID = -1; break;
+            }
+            shipments[shipmentCount++] = new ShipmentOrder(origin, destination, totalWeight, priorityLevel, status, cargoType, international, assignedAssetID);
+
+            break;
+        }
+
+        case 2:
+        {
+            printC("Select Vehicle: \n\n");
+            printC("1. Truck\n");
+            printC("2. Cargo Plane\n");
+            printC("3, Ship\n");
+            printC("4. Heavy Lift Drone\n");
+            int choice;
+            while (1)
             {
+                cin >> choice;
+                if (choice == 1 || choice == 2 || choice == 3 || choice == 4)
+                    break;
+                else
+                    printC("Invalid choice, Please try again.\n");
+            }
+            cout << endl;
+            printC("Enter Crate ID: \n");
+            int tempID;
+            cin >> tempID;
 
-                int ch; string origin; string destination; double totalWeight; string priorityLevel; string status; string cargoType; bool international; int assignedAssetID;
-                printC("Enter origin location: \n");                                                                  cin >> origin;
-                printC("Enter destination: \n");                                                                      cin >> destination;
-                printC("Enter total weight: \n");                                                                     cin >> totalWeight;
-                printC("Select priority level: \n1. STANDARD\n2. EXPRESS\n 3. CRITICAL\n");                           cin >> ch;
-                switch (ch) {
-                    case 1: priorityLevel = "STANDARD"; break;
-                    case 2: priorityLevel = "EXPRESS"; break;
-                    case 3: priorityLevel = "CRITICAL"; break;
-                    default: priorityLevel = "STANDARD"; break;
-                }
-                printC("Select status: \n1. PENDING\n2. IN_TRANSIT\n 3. DELIVERED\n");                                cin >> ch;
-                switch (ch) {
-                    case 1: status = "PENDING"; break;
-                    case 2: status = "IN_TRANSIT"; break;
-                    case 3: status = "DELIVERED"; break;
-                    default: status = "PENDING"; break;
-                }
-                printC("Select cargo type: \n1. GENERAL\n2. PERISHABLE\n3. HAZARDOUS\n");                             cin >> ch;
-                switch (ch) {
-                    case 1: cargoType = "GENERAL"; break;
-                    case 2: cargoType = "PERISHABLE"; break;
-                    case 3: cargoType = "HAZARDOUS"; break;
-                    default: cargoType = "GENERAL"; break;
-                }
-                printC("Is shipment international? (1 = Yes, 0 = No): \n");                                           cin >> ch;
-                switch (ch) {
-                    case 1: international = true; break;
-                    case 0: international = false; break;
-                    default: international = true; break;
-                }
-                printC("Assign to which vehicle?: \n1. Truck\n2. Cargo Plane\n 3. Ship\n 4. Heavy Lift Drone\n");     cin >> ch;
-                switch (ch) {
-                    case 1: assignedAssetID = Truck1.getAssetID(); break;
-                    case 2: assignedAssetID = CargoPlane1.getAssetID(); break;
-                    case 3: assignedAssetID = Ship1.getAssetID(); break;
-                    case 4: assignedAssetID = Drone1.getAssetID(); break;
-                    default: assignedAssetID = -1; break;
-                }
-                shipments[shipmentCount++] = new ShipmentOrder(origin, destination, totalWeight, priorityLevel, status, cargoType, international, assignedAssetID);
+            printC("Enter Content Description: \n");
+            string tempDesc;
+            cin >> tempDesc;
 
-                break;
+            printC("Enter Weight (Kg): \n");
+            double tempWeight;
+            cin >> tempWeight;
+
+            printC("Fragility (FRAGILE / STANDARD): \n");
+            string tempFrag;
+            cin >> tempFrag;
+
+            printC("Hazmat Code (NONE / FLAMMABLE / BIOLOGICAL / RADIOACTIVE): \n");
+            string tempHam;
+            cin >> tempHam;
+
+            printC("Enter Origin Country: \n");
+            string tempcount;
+            cin >> tempcount;
+
+            crates[crateCount] = new CargoCrate(tempID, tempDesc, tempWeight, tempFrag, tempHam, tempcount);
+            if (choice == 1)
+                Truck1 + *crates[crateCount]; //check later
+            else if (choice == 2)
+                CargoPlane1 + *crates[crateCount]; //check later
+            else if (choice == 3)
+                Ship1 + *crates[crateCount]; //check later
+            else if (choice == 4)
+                Drone1 + *crates[crateCount]; //check later
+            crateCount++;
+            //more later
+            break;
+        }
+        case 3: {//update 3
+            for (int i = 0; i < shipmentCount; i++)
+            {
+                printC("Order ID: "); cout << shipments[i]->getOrderID() << "\t";
+                printC("Priority Level: "); cout << shipments[i]->getPriority() << endl;
+            }
+            cout << endl;
+            printC("Enter Shipment Order ID to dispatch:");
+            int tempID;
+            cin >> tempID;
+
+            printC("Select Vehicle to assign: \n");
+            printC("1. Truck");
+            printC("2. Cargo Plane");
+            printC("3, Ship");
+            printC("4. Heavy Lift Drone");
+            int choice;
+            while (1)
+            {
+                cin >> choice;
+                if (choice == 1 || choice == 2 || choice == 3 || choice == 4)
+                    break;
+                else
+                    printC("Invalid choice, Please try again.");
             }
 
-            case 2:
+            printC("Enter distance to destination (Km): ");
+            int tempDis;
+            cin >> tempDis;
+
+            for (int i = 0; i < shipmentCount; i++)
             {
-                printC("Select Vehicle: \n\n");
-                printC("1. Truck\n");
-                printC("2. Cargo Plane\n");
-                printC("3, Ship\n");
-                printC("4. Heavy Lift Drone\n");
-                int choice;
-                while(1)
+                if (shipments[i]->getOrderID() == tempID)
                 {
-                    cin>>choice;
-                    if(choice==1 || choice==2 || choice==3 || choice == 4)
-                        break;
-                    else
-                        printC("Invalid choice, Please try again.\n");
+                    shipments[i]->setStatus("IN_TRANSIT");
+
                 }
-                cout<<endl;
-                printC("Enter Crate ID: \n");
-                int tempID;
-                cin>>tempID;
-
-                printC("Enter Content Description: \n");
-                string tempDesc;
-                cin>>tempDesc;
-
-                printC("Enter Weight (Kg): \n");
-                double tempWeight;
-                cin>>tempWeight;
-
-                printC("Fragility (FRAGILE / STANDARD): \n");
-                string tempFrag;
-                cin>>tempFrag;
-
-                printC("Hazmat Code (NONE / FLAMMABLE / BIOLOGICAL / RADIOACTIVE): \n");
-                string tempHam;
-                cin>>tempHam;
-
-                printC("Enter Origin Country: \n");
-                string tempcount;
-                cin>>tempcount;
-
-                crates[crateCount] = new CargoCrate(tempID, tempDesc, tempWeight, tempFrag, tempHam, tempcount);
-                if(choice==1)
-                    Truck1 + *crates[crateCount]; //check later
-                else if (choice==2)
-                    CargoPlane1 + *crates[crateCount]; //check later
-                else if (choice==3)
-                    Ship1 + *crates[crateCount]; //check later
-                else if (choice==4)
-                    Drone1 + *crates[crateCount]; //check later
-                crateCount++;
-                //more later
-                break;
             }
-            case 3: //update 3
-                for(int i=0; i<shipmentCount; i++)
-                {
-                    printC("Order ID: "); cout<<shipments[i]->getOrderID()<<"\t";
-                    printC("Priority Level: "); cout<<shipments[i]->getPriority()<<endl;
-                }
-                cout<<endl;
-                printC("Enter Shipment Order ID to dispatch:")
-                int tempID;
-                cin>>tempID;
 
-                printC("Select Vehicle to assign: \n");
-                printC("1. Truck");
-                printC("2. Cargo Plane");
-                printC("3, Ship");
-                printC("4. Heavy Lift Drone");
-                int choice;
-                while(1)
-                {
-                    cin>>choice;
-                    if(choice==1 || choice==2 || choice==3 || choice == 4)
-                        break;
-                    else
-                        printC("Invalid choice, Please try again.");
-                }
+            if (choice == 1)
+                Truck1; //check later //I don't understand what or how am i supposed to calculate transit time with just orderID
+            else if (choice == 2)
+                CargoPlane1 + *crates[crateCount]; //check later
+            else if (choice == 3)
+                Ship1 + *crates[crateCount]; //check later
+            else if (choice == 4)
+                Drone1 + *crates[crateCount]; //check later
+            crateCount++;
 
-                printC("Enter distance to destination (Km): ");
-                int tempDis;
-                cin>>tempDis;
+            break;
+        }
 
-                for(int i=0; i<shipmentCount; i++)
-                {
-                    if(shipments[i]->getOrderID()==tempID)
-                    {
-                        shipments[i]->setStatus("IN_TRANSIT");
+        case 4: {
 
+            int ID; bool flag = false;
+
+            while (flag == false) {
+                printC("Enter Shipment Order ID to audit: ");                               cin >> ID;
+                for (int i = 0; i < shipmentCount; i++) {
+                    if (shipments[i]->getOrderID() == ID) {
+                        flag = true;
+                        if (!shipments[i]->getIsInternational()) {
+                            printC("Domestic shipment - no audit required\n");
+                        }
+                        else {
+
+                        }
                     }
                 }
 
-                if (choice==1)
-                    Truck1; //check later //I don't understand what or how am i supposed to calculate transit time with just orderID
-                else if (choice==2)
-                    CargoPlane1 + *crates[crateCount]; //check later
-                else if (choice==3)
-                    Ship1 + *crates[crateCount]; //check later
-                else if (choice==4)
-                    Drone1 + *crates[crateCount]; //check later
-                    rateCount++;
+                if (!flag) {
+                    printC("ID not found, try again\n");
+                }
+            }
 
-                break;
-
-            case 4:
-
-                break;
+              break;
+        }
 
             case 5:
 

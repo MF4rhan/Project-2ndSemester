@@ -23,9 +23,10 @@ ShipmentOrder::~ShipmentOrder()
     globalActiveShipments--;
 }
 
-int ShipmentOrder::getOrderID() {return orderID;} //update 1
-string ShipmentOrder::getPriority() {return priorityLevel;} //update 1
+int ShipmentOrder::getOrderID() const {return orderID;} //update 1
+string ShipmentOrder::getPriority() const {return priorityLevel;} //update 1
 void ShipmentOrder::setStatus(string stat)  {status=stat;} //update 2
+bool ShipmentOrder::getIsInternational() const {return isInternational;}
 
 //Cargo Crate
 CargoCrate::CargoCrate(int ID, string cD, double W, string fF, string ham, string country)

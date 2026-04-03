@@ -31,7 +31,7 @@ public:
     string getPriority() const; //update 1
     void setStatus(string stat); //update 2
 
-
+    bool getIsInternational() const;
 
 };
 
