@@ -39,7 +39,7 @@ double AirTransport::calculateTransitTime(double distance) const
 
 void AirTransport::operator+(const CargoCrate& crate)
 {
-    if (crate.getHamzat() != "NONE") {
+    if (crate.getHazmat() != "NONE") {
         cout << "Hazmat cargo rejected - air transport restriction!" << endl;
         return;
     }
@@ -61,7 +61,7 @@ double HeavyLiftDrone::calculateTransitTime(double distance) const
 }
 
 void HeavyLiftDrone::operator+(const CargoCrate& crate) {
-    if (crate.getHamzat() != "NONE") {
+    if (crate.getHazmat() != "NONE") {
         cout << "Drone rejected hamzat - aerial safety rule" << endl;
         return;
     }

@@ -2,8 +2,9 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
 using namespace std;
+
+class CargoCrate;
 
 class ShipmentOrder
 {
@@ -17,9 +18,11 @@ private:
     string cargoType;           // "GENERAL", "PERISHABLE", "HAZARDOUS"
     bool isInternational;       // triggers CustomsAuditor
     int assignedAssetID;     // links to a TransportAsset
-    int OrderCounter; //update 1
+    static int orderCount; //update 1
     static int globalActiveShipments;
 
+    CargoCrate* assignedCrates[20];
+    int crateCount = 0;
 
 public:
     ShipmentOrder(string oN, string dest, double Tw, string pL, string stat, string type, bool isInt, int AID);
@@ -28,10 +31,17 @@ public:
     ~ShipmentOrder();
 
     int getOrderID() const; //update 1
+    string getOriginNode() const;
+    string getDestinationNode() const;
+    double getTotalWeight() const;
+    int getCrateCount() const;
     string getPriority() const; //update 1
     void setStatus(string stat); //update 2
-
     bool getIsInternational() const;
+    
+    void addCrate(CargoCrate* crate);
+
+    friend class CustomsAuditor;
 
 };
 
@@ -42,14 +52,14 @@ private:
     string contentsDescription;
     double weightKg;
     string fragileFlag;             // "FRAGILE", "STANDARD" - for CustomsAuditor
-    string hamzatCode;              // "NONE", "FLAMMABLE", "BIOLOGICAL", "RADIOACTIVE"  - for CustomsAuditor
+    string hazmatCode;              // "NONE", "FLAMMABLE", "BIOLOGICAL", "RADIOACTIVE"  - for CustomsAuditor
     string originCountry;           // - for CustomsAuditor
 
 
 public:
     CargoCrate(int ID, string cD, double W, string fF, string ham, string country);
     double getWeight() const;
-    string getHamzat() const;
+    string getHazmat() const;
     string getFragileFlag() const;
     CargoCrate operator+(const CargoCrate& other) const;
     //Not sure if this is right, check its syntax later
@@ -67,11 +77,9 @@ private:
     double tariffRatePercent;
 
 
-    friend class ShipmentOrder;
-
 public:
-CustomsAuditor(int ID, string name, string jurs, string ban, double trump);
+    CustomsAuditor(int ID, string name, string jurs, string ban, double trump);
 
-
+    void auditShipment(const ShipmentOrder& order);
 
 };

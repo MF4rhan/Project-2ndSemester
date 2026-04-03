@@ -2,9 +2,11 @@
 #include "Logistics.h"
 
 void printC(string message, int width = 140) {
-    int padding = (width - message.length()) / 2;
+    int padding = (width - (int)message.length()) / 2;    // .length returns size_t (unsigned), so convert to int to remove warning
     cout << string(padding, ' ') << message;
 }
+
+int ShipmentOrder::orderCount = 0;
 
 int main() {
     CargoCrate* crates[50]; //array of crates
@@ -13,6 +15,7 @@ int main() {
     int shipmentCount = 0;
 
 
+    CustomsAuditor auditor(1, "Ahmed", "GULF", "", 20);
     GroundTransport Truck1(123, 7000, 0, "Truck", "working", "Karachi", "ABC-123", 80, "Highway", 100); //temporary truck object
     AirTransport CargoPlane1(234, 10000, 0, "Cargo Plane", "working", "Karachi", "AC-12", 12000, 700, 3000, true); //temporary Ship
     HeavyLiftDrone Drone1(90, 3000, 0, "Heavy Lift Drone", "working", "Karachi", "A-12", 60, "Local", 100, "BD-14", 1000, 80, 500, false, "ASJD100FK", 100, true, 180, 30, 60); //temporary Heavy
@@ -22,19 +25,20 @@ int main() {
     int userChoice = 1;   //avoid unwanted prompt at range check at do while's start
 
     do {
-        system("clear");    //for linux, use system("clear");
-        //system("cls");    //for Windows, use system("cls");
+        //system("clear");    //for linux, use system("clear");
+        system("cls");    //for Windows, use system("cls");
         if (userChoice < 1 || userChoice > 7) {
             printC("--- Incorrect input, please try again ---\n");
         }
         printC("==== = SUPPLY CHAING LOGISTICS = ====\n");
-        printC("1. Create new shipment");
-        printC("2. Load cargo onto vehicle");
-        printC("3. Dispatch shipment");
-        printC("4. Run customs audit");
-        printC("5. View fleet status");
-        printC("6. Complete shipment");
-        printC("7. Exit");
+        printC("1. Create new shipment\n");
+        printC("2. Load cargo onto vehicle\n");
+        printC("3. Dispatch shipment\n");
+        printC("4. Run customs audit\n");
+        printC("5. View fleet status\n");
+        printC("6. Complete shipment\n");
+        printC("7. Assign crate to shipment\n");
+        printC("8. Exit\n");
         cin >> userChoice;
 
         switch (userChoice) {
@@ -211,7 +215,7 @@ int main() {
                             printC("Domestic shipment - no audit required\n");
                         }
                         else {
-
+                            auditor.auditShipment(*shipments[i]);
                         }
                     }
                 }
@@ -233,6 +237,10 @@ int main() {
                 break;
 
             case 7:
+
+                break;
+
+            case 8:
                 printC("Exiting....");
                 break;
 
