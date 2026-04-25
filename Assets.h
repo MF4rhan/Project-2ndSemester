@@ -19,11 +19,14 @@ public:
     //pure virtual function
     virtual double calculateTransitTime(double distance) const = 0;
     //more methods later
+
     int getAssetID() const;
+    double getCurrentLoad() const;
+    double getMaxPayLoad() const;
+    string getStatus() const;
+    string getName() const;
 
-
-
-
+    void resetLoad();
 };
 
 

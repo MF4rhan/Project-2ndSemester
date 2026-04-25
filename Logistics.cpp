@@ -44,14 +44,16 @@ string ShipmentOrder::getPriority() const {return priorityLevel;} //update 1
 void ShipmentOrder::setStatus(string stat)  {status=stat;} //update 2
 bool ShipmentOrder::getIsInternational() const {return isInternational;}
 int ShipmentOrder::getCrateCount() const {return crateCount;};
+int ShipmentOrder::getAssignedAssetID() const { return assignedAssetID; }
+string ShipmentOrder::getStatus() const { return status; }
 
 //Cargo Crate
-CargoCrate::CargoCrate(int ID, string cD, double W, string fF, string ham, string country)
-: crateID(ID), contentsDescription(cD), weightKg(W), fragileFlag(fF), hazmatCode(ham), originCountry(country) {}
+CargoCrate::CargoCrate(int ID, double W, string cD, string fF, string ham, string country) : crateID(ID), contentsDescription(cD), weightKg(W), fragileFlag(fF), hazmatCode(ham), originCountry(country) {}
 
 double CargoCrate::getWeight() const        {return weightKg;}
 string CargoCrate::getHazmat() const        {return hazmatCode;}
 string CargoCrate::getFragileFlag() const   {return fragileFlag;}
+int CargoCrate::getCrateID() const          {return crateID;}
 
 CargoCrate CargoCrate::operator+(const CargoCrate& other) const
 {

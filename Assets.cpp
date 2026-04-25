@@ -7,6 +7,12 @@ TransportAsset::TransportAsset(int id, double maxload, double load, string name,
 :assetID(id), maxPayLoadWeight(maxload), currentLoad(load), assetName(name), operationalStatus(status), homeDepot(depot)   {}
 
 int TransportAsset::getAssetID() const  {return assetID;}
+double TransportAsset::getCurrentLoad() const { return currentLoad; }
+double TransportAsset::getMaxPayLoad() const { return maxPayLoadWeight; }
+string TransportAsset::getStatus() const { return operationalStatus; }
+string TransportAsset::getName() const { return assetName; }
+
+void TransportAsset::resetLoad() { currentLoad = 0; }
 
 //Ground Transport stuff
 GroundTransport::GroundTransport(int id, double maxload, double load, string name, string status, string depot, string plate, double speed, string level, double fuel)
@@ -25,6 +31,8 @@ void GroundTransport::operator+(const CargoCrate& crate) {
     }
     currentLoad += crate.getWeight();
 }
+
+
 
 //Air Transport stuff
 

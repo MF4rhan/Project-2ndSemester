@@ -21,13 +21,20 @@ int main() {
     HeavyLiftDrone Drone1(90, 3000, 0, "Heavy Lift Drone", "working", "Karachi", "A-12", 60, "Local", 100, "BD-14", 1000, 80, 500, false, "ASJD100FK", 100, true, 180, 30, 60); //temporary Heavy
     WaterTransport Ship1(400, 50000, 0, "Shippy", "working", "Karachi", "ATY-19", 5, "Cargo Ship", 30, 20, "Karachi Port", true); //temporary Ship
 
+    TransportAsset* fleet[50];
+    int fleetCount = 0;
+
+    fleet[fleetCount++] = &Truck1;
+    fleet[fleetCount++] = &CargoPlane1;
+    fleet[fleetCount++] = &Ship1;
+    fleet[fleetCount++] = &Drone1;
 
     int userChoice = 1;   //avoid unwanted prompt at range check at do while's start
 
     do {
         //system("clear");    //for linux, use system("clear");
         system("cls");    //for Windows, use system("cls");
-        if (userChoice < 1 || userChoice > 7) {
+        if (userChoice < 1 || userChoice > 8) {
             printC("--- Incorrect input, please try again ---\n");
         }
         printC("==== = SUPPLY CHAING LOGISTICS = ====\n");
@@ -137,7 +144,7 @@ int main() {
             string tempcount;
             cin >> tempcount;
 
-            crates[crateCount] = new CargoCrate(tempID, tempDesc, tempWeight, tempFrag, tempHam, tempcount);
+            crates[crateCount] = new CargoCrate(tempID, tempWeight, tempDesc, tempFrag, tempHam, tempcount);
             if (choice == 1)
                 Truck1 + *crates[crateCount]; //check later
             else if (choice == 2)
@@ -228,18 +235,154 @@ int main() {
               break;
         }
 
-            case 5:
-                // HELLLOOOO
+        case 5: {
+
+            system("cls");
+            printC("========== FLEET STATUS ==========\n");
+
+            for (int i = 0; i < fleetCount; i++) {
+                cout << fleet[i]->getName()
+                    << " | Load: " << fleet[i]->getCurrentLoad()
+                    << "/" << fleet[i]->getMaxPayLoad() << "kg"
+                    << " | Status: " << fleet[i]->getStatus() << endl;
+            }
+
+            printC("==================================\n");
+            ShipmentOrder::renderGlobalDashboard();
+
+            system("pause");
+
+            break;
+        }
+
+        case 6: {
+
+            system("cls");
+
+            printC("========== ACTIVE SHIPMENTS ==========\n");
+            bool anyActive = false;
+
+            for (int i = 0; i < shipmentCount; i++) {
+                if (shipments[i]->getStatus() != "DELIVERED") {
+                    cout << "Order ID: " << shipments[i]->getOrderID()
+                        << " | " << shipments[i]->getOriginNode()
+                        << " -> " << shipments[i]->getDestinationNode()
+                        << " | Status: " << shipments[i]->getStatus()
+                        << " | Priority: " << shipments[i]->getPriority() << endl;
+                    anyActive = true;
+                }
+            }
+
+            if (!anyActive) {
+                printC("No active shipments to complete.\n");
+
+                system("pause");
+
                 break;
+            }
 
-            case 6:
+            int tempID;
+            printC("Enter Shipment Order ID to mark as delivered: \n");
+            cin >> tempID;
 
+            bool found = false;
+            for (int i = 0; i < shipmentCount; i++) {
+                if (shipments[i]->getOrderID() == tempID) {
+                    found = true;
+
+                    shipments[i]->setStatus("DELIVERED");
+
+                    for (int j = 0; j < fleetCount; j++) {
+                        if (fleet[j]->getAssetID() == shipments[i]->getAssignedAssetID()) {
+                            fleet[j]->resetLoad();
+                            break;
+                        }
+                    }
+
+                    printC("Shipment completed successfully\n");
+                    cout << "Order ID: " << tempID
+                        << " | " << shipments[i]->getOriginNode()
+                        << " -> " << shipments[i]->getDestinationNode() << endl;
+
+                    ShipmentOrder::renderGlobalDashboard();
+
+                    break;
+                }
+            }
+
+            if (!found) {
+                printC("Shipment ID not found\n");
+            }
+
+            system("pause");
+
+            break;
+        }
+        case 7: {
+
+            system("cls");
+
+            printC("========== AVAILABLE CRATES ==========\n");
+            if (crateCount == 0) {
+                printC("No crates to assign\n");
+                system("pause");
                 break;
+            }
+            for (int i = 0; i < crateCount; i++) {
+                crates[i]->displayInfo();
+            }
 
-            case 7:
 
+            printC("========== AVAILABLE SHIPMENTS ==========\n");
+            if (shipmentCount == 0) {
+                printC("No shipments to assign crates to\n");
+                system("pause");
                 break;
+            }
+            for (int i = 0; i < shipmentCount; i++) {
+                cout << "Order ID: " << shipments[i]->getOrderID()
+                    << " | " << shipments[i]->getOriginNode()
+                    << " -> " << shipments[i]->getDestinationNode()
+                    << " | Status: " << shipments[i]->getStatus() << endl;
+            }
 
+            int crateID, shipID;
+            printC("Enter crate ID to assign: \n");     cin >> crateID;
+            printC("Enter shipment order ID: \n");      cin >> shipID;
+
+            CargoCrate* targetCrate = nullptr;
+
+            for (int i = 0; i < crateCount; i++) {
+                if (crates[i]->getCrateID() == crateID) {
+                    targetCrate = crates[i];
+                    break;
+                }
+            }
+
+            bool assigned = false;
+
+            for (int i = 0; i < shipmentCount; i++) {
+                if (shipments[i]->getOrderID() == shipID) {
+                    if (targetCrate != nullptr) {  // Check if crate was found or not
+                        shipments[i]->addCrate(targetCrate);
+                        printC("Crate assigned to shipment");
+                        assigned = true;
+                    }
+                    else {
+                        printC("Crate ID not found");
+                    }
+                    break;
+                }
+            }
+
+            if (!assigned && targetCrate != nullptr) {
+                printC("Shipment ID not found");
+            }
+
+            system("pause");
+
+            break;
+        }
             case 8:
                 printC("Exiting....");
                 break;
@@ -248,7 +391,7 @@ int main() {
                 break;
             }
 
-    } while (userChoice != 7);
+    } while (userChoice != 8);
 
 
     return 0;

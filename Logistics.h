@@ -38,7 +38,9 @@ public:
     string getPriority() const; //update 1
     void setStatus(string stat); //update 2
     bool getIsInternational() const;
-    
+    int getAssignedAssetID() const;
+    string getStatus() const;
+
     void addCrate(CargoCrate* crate);
 
     friend class CustomsAuditor;
@@ -57,13 +59,21 @@ private:
 
 
 public:
-    CargoCrate(int ID, string cD, double W, string fF, string ham, string country);
+    CargoCrate(int ID, double W, string cD = "None", string fF = "None", string ham = "None", string country = "None");
     double getWeight() const;
     string getHazmat() const;
     string getFragileFlag() const;
+    int getCrateID() const;
     CargoCrate operator+(const CargoCrate& other) const;
     //Not sure if this is right, check its syntax later
     //definition in cpp
+
+    void displayInfo() {
+        cout << "Crate ID: " << crateID
+             << " Weight: " << weightKg
+             << " Hamzat: " << hazmatCode
+             << " Fragile: " << fragileFlag << endl;
+    }
 
 };
 
