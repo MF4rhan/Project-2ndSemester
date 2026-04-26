@@ -12,22 +12,27 @@ ShipmentOrder::ShipmentOrder(string oN, string dest, double Tw, string pL, strin
 {
     globalActiveShipments++;
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 20; i++)
+    {
         assignedCrates[i] = nullptr;
     }
 }
 
 void ShipmentOrder::addCrate(CargoCrate* crate)
 {
-    if (crateCount < 20) {
+    if (crateCount < 20)
+    {
         assignedCrates[crateCount++] = crate;
         totalWeightKg += crate->getWeight();
     }
 }
 
-void ShipmentOrder:: renderGlobalDashboard()
+void ShipmentOrder::renderGlobalDashboard()
 {
-    //logic  later
+    cout << "\n--- Global Dashboard ---\n";
+    cout << "Total shipments created : " << orderCount << "\n";
+    cout << "Currently active        : " << globalActiveShipments << "\n";
+    cout << "------------------------\n";
 }
 
 ShipmentOrder::~ShipmentOrder()
@@ -44,8 +49,9 @@ string ShipmentOrder::getPriority() const {return priorityLevel;} //update 1
 void ShipmentOrder::setStatus(string stat)  {status=stat;} //update 2
 bool ShipmentOrder::getIsInternational() const {return isInternational;}
 int ShipmentOrder::getCrateCount() const {return crateCount;};
-int ShipmentOrder::getAssignedAssetID() const { return assignedAssetID; }
-string ShipmentOrder::getStatus() const { return status; }
+int ShipmentOrder::getAssignedAssetID() const {return assignedAssetID;}
+string ShipmentOrder::getStatus() const {return status;}
+string ShipmentOrder::getCargoType() const {return cargoType;}
 
 //Cargo Crate
 CargoCrate::CargoCrate(int ID, double W, string cD, string fF, string ham, string country) : crateID(ID), contentsDescription(cD), weightKg(W), fragileFlag(fF), hazmatCode(ham), originCountry(country) {}
@@ -57,15 +63,14 @@ int CargoCrate::getCrateID() const          {return crateID;}
 
 CargoCrate CargoCrate::operator+(const CargoCrate& other) const
 {
-    //logic later
-    return *this; //placeholder for now
+    return *this;
 }
 
 //Customs Auditor
 CustomsAuditor::CustomsAuditor(int ID, string name, string jurs, string ban, double trump)
 : auditorID(ID), auditorName(name), jurisdiction(jurs), tariffRatePercent(trump)
 {
-    // in-class array init not allowed for plain arrays outside C++11 aggregate init
+    // in class array init not allowed for plain arrays outside C++11 aggregate init
     // so initialize here instead
     bannedHamzatCodes[0] = "UN0190";
     bannedHamzatCodes[1] = "UN1789";
@@ -75,7 +80,8 @@ CustomsAuditor::CustomsAuditor(int ID, string name, string jurs, string ban, dou
     // [5]-[9] left empty for future additions
 }
 
-void CustomsAuditor::auditShipment(const ShipmentOrder& order) {
+void CustomsAuditor::auditShipment(const ShipmentOrder& order)
+{
 
     cout << ("=== CUSTOMS AUDIT ===\n");
     cout << "Origin: " << order.originNode << endl;
@@ -84,29 +90,35 @@ void CustomsAuditor::auditShipment(const ShipmentOrder& order) {
     cout << "Crates in shipment: " << order.crateCount << endl;
     cout << "------------------------------------" << endl;
 
-    for (int i = 0; i < order.crateCount; i++) {
+    for (int i = 0; i < order.crateCount; i++)
+    {
         CargoCrate* c = order.assignedCrates[i];
 
-        cout << "Crate #" << i + 1 << " | " << c->getWeight() << "kg" << " | Hazmat: " << c->getHazmat() << endl;
+        cout << "Crate " << i + 1 << " - weight: " << c->getWeight() << "kg, hazmat: " << c->getHazmat() << endl;
 
         bool banned = false;
 
-        for (int j = 0; j < 10; j++) {
-            if (bannedHamzatCodes[j] == c->getHazmat()) {
+        for (int j = 0; j < 10; j++)
+        {
+            if (bannedHamzatCodes[j] == c->getHazmat())
+            {
                 banned = true;
                 break;
             }
         }
 
-        if (banned) {
-            cout << "\033[1;31m[FLAGGED] Banned hamzat detected!\033[0m" << endl;
+        if (banned)
+        {
+            cout << "\033[1;31mWARNING: Banned hazmat detected!\033[0m" << endl;
         }
-        else {
-            cout << "\033[1; 32m[CLEARED] Crate passed inspection.\033[0m" << endl;
+        else
+        {
+            cout << "\033[1;32mCrate passed inspection.\033[0m" << endl;
         }
-        
-        if (c->getFragileFlag() == "FRAGILE") {
-            cout << "\033[1;33m[WARNING] Fragile crate!\033[0m" << endl;
+
+        if (c->getFragileFlag() == "FRAGILE")
+        {
+            cout << "\033[1;33mNote: Fragile crate!\033[0m" << endl;
         }
 
     }

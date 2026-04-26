@@ -1,24 +1,27 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include "Exceptions.h"
 using namespace std;
 
-class CargoCrate; //forward declaration needed for operator+ parameters
+class CargoCrate; // forward declaration needed for operator+ parameters
 
 class TransportAsset
 {
 protected:
-    const int assetID;          // an ID for the vehicle
-    double maxPayLoadWeight;   // max weight capacity of that vehicle
-    double currentLoad;         // the current load
-    string assetName;           // the name of the vehicle
-    string operationalStatus;   // maintainance, or working , or retired, etc.
-    string homeDepot;           // where the home/base of the vehicle is
+    const int assetID;
+    double maxPayLoadWeight;
+    double currentLoad;
+    string assetName;
+    string operationalStatus;
+    string homeDepot;
 
 public:
     TransportAsset(int id, double maxload, double load, string name, string status, string depot);
-    //pure virtual function
+
     virtual double calculateTransitTime(double distance) const = 0;
-    //more methods later
+    virtual void loadCrate(const CargoCrate& crate) = 0;  // unified load interface
+    virtual string getTypeName() const = 0; // "Ground", "Air", "Water", "Drone"
 
     int getAssetID() const;
     double getCurrentLoad() const;
@@ -27,86 +30,87 @@ public:
     string getName() const;
 
     void resetLoad();
+
+    virtual ~TransportAsset() {}
 };
 
 
-class GroundTransport: virtual public TransportAsset
+class GroundTransport : virtual public TransportAsset
 {
 protected:
-    string licensePlate;        // license plate for customs audit later prob
-    double speedKmph;           // average speed, probably used for transit time later
-    string roadClearanceLevel;  // local, highway, offroad, water etc
-    double fuelLevel;           // from 1-100 pc
-
+    string licensePlate;
+    double speedKmph;
+    string roadClearanceLevel;
+    double fuelLevel;
 
 public:
     GroundTransport(int id, double maxload, double load, string name, string status, string depot, string plate, double speed, string level, double fuel);
 
     double calculateTransitTime(double distance) const override;
-
     void operator+(const CargoCrate& crate);
-
-
-
+    void loadCrate(const CargoCrate& crate) override;
+    string getTypeName() const override;
 };
 
-class AirTransport: virtual public TransportAsset
+
+class AirTransport : virtual public TransportAsset
 {
 protected:
-    string tailNumber;          // aircraft registration
-    double cruiseAltitudeM;     // in meters
-    double airSpeedKmph;        // in kmph
-    int maxFlightRangeKm;       // max range in km
-    bool requiresRunway;        // false for drones/VTOL
+    string tailNumber;
+    double cruiseAltitudeM;
+    double airSpeedKmph;
+    int maxFlightRangeKm;
+    bool requiresRunway;
 
 public:
     AirTransport(int id, double maxload, double load, string name, string status, string depot, string num, double alt, double speed, int range, bool runway);
 
     double calculateTransitTime(double distance) const override;
-
     void operator+(const CargoCrate& crate);
-
+    void loadCrate(const CargoCrate& crate) override;
+    string getTypeName() const override;
 };
 
-class HeavyLiftDrone: public GroundTransport, public AirTransport
+
+class HeavyLiftDrone : public GroundTransport, public AirTransport
 {
 private:
     string droneModel;
-    double batteryLevel;       // from 1-100 pc
-    bool isAutonomous;         // always true, but still good to flag anyway
-    int maxHoverTimeMinutes;   // minutes time before it dies
-    double urbanSpeedKmph;     // slower in city corridors
-    double aerialSpeedKmph;    // open-air speed
-
+    double batteryLevel;
+    bool isAutonomous;
+    int maxHoverTimeMinutes;
+    double urbanSpeedKmph;
+    double aerialSpeedKmph;
 
 public:
-    HeavyLiftDrone(int id, double maxload, double load, string name, string status, string depot, string plate, double Gspeed, string level, double fuel, string num, double alt, double Aspeed, int range, bool runway, string Dmodel, double battery, bool auton, int hover, double HDGspeed, double HDAspeed);
+    HeavyLiftDrone(int id, double maxload, double load, string name, string status, string depot, string plate, double Gspeed, string level, double fuel,
+                   string num, double alt, double Aspeed, int range, bool runway, string Dmodel, double battery, bool auton, int hover,
+                   double HDGspeed, double HDAspeed);
 
     double calculateTransitTime(double distance) const override;
-
     void operator+(const CargoCrate& crate);
-
-
-
-
+    void loadCrate(const CargoCrate& crate) override;
+    string getTypeName() const override;
 };
 
-class WaterTransport: virtual public TransportAsset
+
+class WaterTransport : virtual public TransportAsset
 {
 private:
     string vesselRegistrationNumber;
-    double speedKnots;              // water speed in knots, cuz thats what ships use
-    string vesselType;              // cargo ship or ferry or barge, etc
-    double draughtMeters;           // how deep it sits in water
+    double speedKnots;
+    string vesselType;
+    double draughtMeters;
     int maxCrewCapacity;
-    string portOfRegistry;          // home port
-    bool isOceanGoing;              // false = river/canal only
-
+    string portOfRegistry;
+    bool isOceanGoing;
 
 public:
-    WaterTransport(int id, double maxload, double load, string name, string status, string depot, string Rnum, double knots, string type, double draught, int maxcrew, string portreg, bool ocean);
-
-    void operator+(const CargoCrate& crate);
+    WaterTransport(int id, double maxload, double load, string name, string status, string depot, string Rnum, double knots, string type, double draught,
+                   int maxcrew, string portreg, bool ocean);
 
     double calculateTransitTime(double distance) const override;
+    void operator+(const CargoCrate& crate);
+    void loadCrate(const CargoCrate& crate) override;
+    string getTypeName() const override;
 };

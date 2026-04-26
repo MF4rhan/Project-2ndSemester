@@ -13,11 +13,11 @@ private:
     string originNode;
     string destinationNode;
     double totalWeightKg;
-    string priorityLevel;       // "STANDARD", "EXPRESS", "CRITICAL"
-    string status;              // "PENDING", "IN_TRANSIT, "DELIVERED"
-    string cargoType;           // "GENERAL", "PERISHABLE", "HAZARDOUS"
-    bool isInternational;       // triggers CustomsAuditor
-    int assignedAssetID;     // links to a TransportAsset
+    string priorityLevel; // "STANDARD", "EXPRESS", "CRITICAL"
+    string status; // "PENDING", "IN_TRANSIT, "DELIVERED"
+    string cargoType; // "GENERAL", "PERISHABLE", "HAZARDOUS"
+    bool isInternational; // triggers CustomsAuditor
+    int assignedAssetID; // links to a TransportAsset
     static int orderCount; //update 1
     static int globalActiveShipments;
 
@@ -30,16 +30,17 @@ public:
 
     ~ShipmentOrder();
 
-    int getOrderID() const; //update 1
+    int getOrderID() const;
     string getOriginNode() const;
     string getDestinationNode() const;
     double getTotalWeight() const;
     int getCrateCount() const;
-    string getPriority() const; //update 1
-    void setStatus(string stat); //update 2
+    string getPriority() const;
+    void setStatus(string stat);
     bool getIsInternational() const;
     int getAssignedAssetID() const;
     string getStatus() const;
+    string getCargoType() const;
 
     void addCrate(CargoCrate* crate);
 
@@ -53,9 +54,9 @@ private:
     int crateID;
     string contentsDescription;
     double weightKg;
-    string fragileFlag;             // "FRAGILE", "STANDARD" - for CustomsAuditor
-    string hazmatCode;              // "NONE", "FLAMMABLE", "BIOLOGICAL", "RADIOACTIVE"  - for CustomsAuditor
-    string originCountry;           // - for CustomsAuditor
+    string fragileFlag; // "FRAGILE", "STANDARD" - for CustomsAuditor
+    string hazmatCode; // "NONE", "FLAMMABLE", "BIOLOGICAL", "RADIOACTIVE"  - for CustomsAuditor
+    string originCountry; // - for CustomsAuditor
 
 
 public:
@@ -65,14 +66,10 @@ public:
     string getFragileFlag() const;
     int getCrateID() const;
     CargoCrate operator+(const CargoCrate& other) const;
-    //Not sure if this is right, check its syntax later
-    //definition in cpp
 
-    void displayInfo() {
-        cout << "Crate ID: " << crateID
-             << " Weight: " << weightKg
-             << " Hamzat: " << hazmatCode
-             << " Fragile: " << fragileFlag << endl;
+    void displayInfo()
+    {
+        cout << "Crate ID: " << crateID << " Weight: " << weightKg << " Hamzat: " << hazmatCode << " Fragile: " << fragileFlag << endl;
     }
 
 };
