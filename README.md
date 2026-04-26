@@ -10,7 +10,7 @@ A menu-driven supply chain logistics simulator built in C++ for our 2nd semester
 - Save and load the system state to text files using custom File I/O.
 
 ## How It Works
-Basically, the program runs in a command-line loop. You start by adding some vehicles to your fleet. Once you have a fleet, you can create cargo crates and assign them to shipment orders. 
+The program runs in a command-line loop. You start by adding some vehicles to your fleet. Once you have a fleet, you can create cargo crates and assign them to shipment orders. 
 
 When you try to load crates onto a vehicle, the system checks several rules. For example, drones can't carry over 50kg per crate, planes can't take hazmat materials, and ships can't take fragile items. If a rule is broken, it blocks the load. When you dispatch a shipment, it calculates the transit time based on the vehicle's speed and the distance. We also added a customs auditor for international orders that flags banned materials and calculates tariffs. You can save all your active data to text files and load it back up later.
 
