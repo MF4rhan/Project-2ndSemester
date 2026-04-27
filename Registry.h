@@ -3,7 +3,7 @@
 #include "Exceptions.h"
 using namespace std;
 
-// generic array to hold pointers so we dont have to rewrite this logic
+// generic array to hold pointers of CargoCrate*, ShipmentOrder*, TransportAsset* so we dont have to rewrite this logic
 template <typename T, int MAX_CAPACITY = 50>
 class Registry
 {
