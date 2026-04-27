@@ -30,7 +30,7 @@ private:
     }
 
 public:
-    // --- SAVING DATA ---
+    // Saving data below
 
     void saveCrates(const Registry<CargoCrate*>& crateList) const
     {
@@ -44,8 +44,7 @@ public:
         {
             CargoCrate* c = crateList[i];
             // format: id,weight,desc,fragile,hazmat,country
-            out << c->getCrateID() << "," << c->getWeight() << "," << "None" << ","
-            << c->getFragileFlag() << "," << c->getHazmat() << "," << "None" << "\n";
+            out << c->getCrateID() << "," << c->getWeight() << "," << "None" << "," << c->getFragileFlag() << "," << c->getHazmat() << "," << "None" << "\n";
         }
 
         out.close();
@@ -63,10 +62,8 @@ public:
         {
             ShipmentOrder* s = shipList[i];
             // format: id,origin,dest,weight,priority,status,type,intl,assetID,crateCount
-            out << s->getOrderID() << "," << s->getOriginNode() << "," << s->getDestinationNode() << ","
-            << s->getTotalWeight() << "," << s->getPriority() << "," << s->getStatus() << ","
-            << s->getCargoType() << "," << s->getIsInternational() << "," << s->getAssignedAssetID() << ","
-            << s->getCrateCount() << "\n";
+            out << s->getOrderID() << "," << s->getOriginNode() << "," << s->getDestinationNode() << "," << s->getTotalWeight() << "," << s->getPriority() << "," << s->getStatus() << ","
+            << s->getCargoType() << "," << s->getIsInternational() << "," << s->getAssignedAssetID() << "," << s->getCrateCount() << "\n";
         }
 
         out.close();
@@ -80,7 +77,7 @@ public:
         cout << "All data saved successfully.\n";
     }
 
-    // --- LOADING DATA ---
+    // Loading data below
 
     void loadCrates(Registry<CargoCrate*>& crateList) const
     {
