@@ -22,10 +22,10 @@ When you try to load crates onto a vehicle, the system checks several rules. For
 - **Operator Overloading:** We overloaded `operator+` to handle capacity checks when loading crates, and `operator[]` for easy array indexing.
 - **Friend Classes:** The `CustomsAuditor` is a friend class to `ShipmentOrder`, which lets it check the private crate arrays directly without opening up security holes with public setters.
 
-## How to Run
-1. Compile: `g++ Main.cpp Assets.cpp Logistics.cpp -o Logistics`
-2. Run on Linux: `./Logistics`
-3. Run on Windows: replace `system("clear")` with `system("cls")` in `Main.cpp`, then run `Logistics.exe`
+### How to Run
+1. **Compile:** Open your terminal (VS Code Terminal, Command Prompt, or PowerShell) and run: `g++ Main.cpp Assets.cpp Logistics.cpp -o Logistics`
+2. **Run on Windows (Default):** In that same terminal, execute the program by typing `Logistics.exe` (if using Command Prompt) or `.\Logistics.exe` (if using PowerShell or VS Code).
+3. **Run on Linux/macOS:** Before compiling, open `Main.cpp` and replace `system("cls")` with `system("clear")`. Then compile and run using `./Logistics`.
 
 ## Made by
 [@MF4rhan](https://github.com/MF4rhan) & [@farazcmd](https://github.com/farazcmd)
